@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      back:
+        aliases:
+          - "rabbitmq.service.com.br"
+  mongodb:
+    image: mongo:4.0.8
+    container_name: 'mongodb'
+    ports:
+      - 27017-27019:27017-27019
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: mydb
+    networks:
+      back:
+        aliases:
+          - "mongo.service.com.br"
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - rabbitmq
+    networks:
+      back:
+        aliases:
+          - "api.service.com.br"
+  consumer:
+    build: ./consumer
+    restart: always
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      back:
+        aliases:
+          - "consumer.service.com.br"
+networks:
+  back:
