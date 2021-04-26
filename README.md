@@ -4,7 +4,7 @@ A job scheduler made in order to understand and study python programming languag
 
 ## Architecture
 
-![alt text](https://github.com/iurydias/job-scheduler/blob/master/arch.png?raw=true "Project Architecture")
+![alt text](https://github.com/iurydias/job-scheduler/blob/main/arch.png?raw=true "Project Architecture")
 
 **Basically, it:**
 
